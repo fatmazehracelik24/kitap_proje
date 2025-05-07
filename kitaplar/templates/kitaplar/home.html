@@ -1,0 +1,72 @@
+{% extends 'kitaplar/base.html' %}
+
+{% block content %}
+<h1>Kitap Listesi</h1>
+
+<!-- Filtreleme Formu -->
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="title" class="form-control" placeholder="Başlıkta Ara" value="{{ request.GET.title }}">
+    </div>
+    <div class="col-md-4">
+        <input type="text" name="content" class="form-control" placeholder="İçerikte Ara" value="{{ request.GET.content }}">
+    </div>
+    <div class="col-md-2">
+        <input type="number" step="0.01" name="min_price" class="form-control" placeholder="Min Fiyat" value="{{ request.GET.min_price }}">
+    </div>
+    <div class="col-md-2">
+        <input type="number" step="0.01" name="max_price" class="form-control" placeholder="Max Fiyat" value="{{ request.GET.max_price }}">
+    </div>
+    <div class="col-md-3">
+        <input type="date" name="start_date" class="form-control" placeholder="Başlangıç Tarihi" value="{{ request.GET.start_date }}">
+    </div>
+    <div class="col-md-3">
+        <input type="date" name="end_date" class="form-control" placeholder="Bitiş Tarihi" value="{{ request.GET.end_date }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Filtrele</button>
+    </div>
+    <div class="col-md-2">
+        <a href="/" class="btn btn-secondary">Temizle</a>
+    </div>
+</form>
+
+<!-- Ortalama Fiyat -->
+{% if ortalama_fiyat %}
+    <div class="alert alert-info">
+        Ortalama Fiyat: {{ ortalama_fiyat|floatformat:2 }} ₺
+    </div>
+{% endif %}
+
+<!-- Sıralama Seçenekleri -->
+<div class="mb-4">
+    <h2>Sıralama Seçenekleri</h2>
+    <a href="?sort=title_asc" class="btn btn-primary btn-sm">Başlık (A-Z)</a>
+    <a href="?sort=title_desc" class="btn btn-primary btn-sm">Başlık (Z-A)</a>
+    <a href="?sort=price_asc" class="btn btn-success btn-sm">Fiyat (Artan)</a>
+    <a href="?sort=price_desc" class="btn btn-success btn-sm">Fiyat (Azalan)</a>
+</div>
+
+<!-- Kitap Listesi -->
+<div class="row">
+    {% for kitap in kitaplar %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ kitap.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ kitap.published_time }}</h6>
+                    <p class="card-text">{{ kitap.content|truncatechars:100 }}</p>
+                    <p class="card-text"><strong>Fiyat:</strong> {{ kitap.price }}₺</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Sonuç bulunamadı.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+
+
+
