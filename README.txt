@@ -1,0 +1,1 @@
+proje hakkında kısa bir bilgi.
