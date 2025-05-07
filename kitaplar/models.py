@@ -5,6 +5,8 @@ class Kitap(models.Model):
     content = models.TextField()
     published_time = models.DateField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    yayinevi = models.CharField(max_length=100, blank=True, null=True)
+
 
     def __str__(self):
         return self.title
